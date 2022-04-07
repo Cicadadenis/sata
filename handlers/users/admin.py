@@ -626,42 +626,20 @@ async def gruuu(message: Message, state: FSMContext):
 
     all_participants = []   # список всех участников канала
     filter_user = ChannelParticipantsSearch('')
-    while True:
-        participants = await client(GetParticipantsRequest(ch,
-            filter_user, offset_user, limit_user, hash=0))
-        if not participants.users:
-            break
-        all_participants.extend(participants.users)
+
+    participants = await client(GetParticipantsRequest(ch,
+        filter_user, offset_user, limit_user, hash=0))
+
+    all_participants.extend(participants.users)
         #offset_user += len(participants.users) # len(participants.users)
     await message.answer("<b>Идет сохранения списка.....</b>")
     all_users_details = []   # список словарей с интересующими параметрами участников канала
     for participant in all_participants:
         dd = participant.status
 
-        try:
-            onl = dd.was_online
-            original_stdout = sys.stdout
-            with open("gggg.txt", "w") as z:
-                sys.stdout = z
-                print(onl)
-                sys.stdout = original_stdout
-            
-            
-            pp = open("gggg.txt", 'r').read()
-            mmdata = pp.split(' ')
+        all_users_details.append(participant.username)     
 
-            ddatta = datetime.now().strftime("20%y-%m-%d")
 
-            if mmdata[0] == ddatta:
-                
-               # if participant.username is  None:
-                    #all_users_details.append(participant.id)
-
-              #  else:
-                all_users_details.append(participant.username)     
-
-        except:
-            pass
         for x in all_users_details:
             with open("ussers.txt", "a") as f:
                 f.write(str(f"{x}\n"))
